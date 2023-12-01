@@ -57,3 +57,5 @@ jobs:
       PR: ${{ github.event.number }}
     steps:
       - run: gh pr edit "$PR" --add-label 'migrate'
+        env:
+          GH_TOKEN: ${{ github.token }}
