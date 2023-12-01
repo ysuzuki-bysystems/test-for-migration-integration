@@ -1,0 +1,35 @@
+name: Check migrate
+
+on:
+  pull_request:
+    paths:
+      - './migrations/**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      pg:
+        image: postgres:16.1-bookworm
+        env:
+          POSTGRES_PASSWORD: secret
+        ports:
+          - 5432:5432
+    env:
+      PGUSER: postgres
+      PGPASSWORD: secret
+      PGHOST: pg
+      PGPORT: 5432
+      PGDATABASE: postgres
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run migrate:up
