@@ -50,3 +50,10 @@ jobs:
         run: npm ci
       - name: MERGED - migrate
         run: npm run migrate:up
+
+  label:
+    runs-on: ubuntu-latest
+    env:
+      PR: ${{ github.event.number }}
+    steps:
+      - run: echo $PR
