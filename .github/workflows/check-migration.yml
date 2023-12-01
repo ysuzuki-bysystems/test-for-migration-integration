@@ -55,7 +55,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PR: ${{ github.event.number }}
+    permissions:
+      pull-requests: write
     steps:
-      - run: gh pr edit "$PR" --add-label 'migrate'
+      - run: gh pr edit "$PR" --add-label 'migrate' --repo "$REPO"
         env:
           GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
