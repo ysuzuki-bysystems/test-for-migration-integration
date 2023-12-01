@@ -23,19 +23,22 @@ jobs:
       PGDATABASE: postgres
 
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
       - uses: actions/setup-node@v3
         with:
           node-version: '20.x'
           cache: npm
-
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.base_ref }}
       - run: npm ci
       - run: npm run migrate:up
 
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          cache: npm
       - run: npm ci
       - run: npm run migrate:up
