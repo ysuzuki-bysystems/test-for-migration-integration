@@ -16,7 +16,7 @@ jobs:
     env:
       PGUSER: postgres
       PGPASSWORD: secret
-      PGHOST: pg
+      PGHOST: localhost
       PGPORT: 5432
       PGDATABASE: postgres
 
