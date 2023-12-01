@@ -3,10 +3,62 @@ name: Check migrate
 on:
   pull_request:
     paths:
-      - './migrations/**'
+      - 'migrations/**'
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    services:
+      pg:
+        image: postgres:16.1-bookworm
+        env:
+          POSTGRES_PASSWORD: secret
+        ports:
+          - 5432:5432
+    env:
+      PGUSER: postgres
+      PGPASSWORD: secret
+      PGHOST: localhost
+      PGPORT: 5432
+      PGDATABASE: postgres
+
     steps:
-      - run: ':'
+      - name: BASE - checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+      - name: BASE - setup-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          cache: npm
+      - name: BASE - npm ci
+        run: npm ci
+      - name: BASE - migrate
+        run: npm run migrate:up
+
+      - name: MERGED - checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - name: MERGED - setup-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          cache: npm
+      - name: MERGED - npm ci
+        run: npm ci
+      - name: MERGED - migrate
+        run: npm run migrate:up
+
+  label:
+    runs-on: ubuntu-latest
+    env:
+      PR: ${{ github.event.number }}
+    permissions:
+      pull-requests: write
+    steps:
+      - run: gh pr edit "$PR" --add-label 'migrate' --repo "$REPO"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
