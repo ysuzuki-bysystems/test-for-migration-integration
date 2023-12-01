@@ -56,4 +56,4 @@ jobs:
     env:
       PR: ${{ github.event.number }}
     steps:
-      - run: echo $PR
+      - run: gh pr edit "$PR" --add-label 'migrate'
