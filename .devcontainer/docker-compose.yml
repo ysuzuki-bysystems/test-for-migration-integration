@@ -1,0 +1,18 @@
+services:
+  dev:
+    image: mcr.microsoft.com/devcontainers/javascript-node:20-bookworm
+    init: true
+    command:
+      - sleep
+      - inf
+  pg:
+    image: postgres:16.1-bookworm
+    environment:
+      - POSTGRES_PASSWORD=secret
+    volumes:
+      - type: volume
+        source: pg-data
+        target: /var/lib/postgresql/data
+
+volumes:
+  pg-data:
