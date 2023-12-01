@@ -1,0 +1,14 @@
+{
+  "name": "test-for-migration-integration",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "migrate": "node-pg-migrate -j sql",
+    "migrate:up": "npm run migrate -- up",
+    "migrate:down": "npm run migrate -- down"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "node-pg-migrate": "^6.2.2"
+  }
+}
