@@ -1,0 +1,12 @@
+name: Check migrate
+
+on:
+  pull_request:
+    paths:
+      - './migrations/**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: ':'
