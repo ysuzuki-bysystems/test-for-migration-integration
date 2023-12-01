@@ -3,7 +3,7 @@ name: Check migrate
 on:
   pull_request:
     paths:
-      - './migrations/**'
+      - './migrations/**/*'
 
 jobs:
   check:
