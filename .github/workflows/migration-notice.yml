@@ -15,10 +15,17 @@ jobs:
       - run: echo '${{ toJSON(github) }}'
 
       - run: |
-          gh pr list --repo "$REPO" --base "$BASE" --label "$LABEL" --json number --jq '.[].number' -sall| xargs -n1 gh pr comment --body "$BODY" --repo "$REPO"
+          MESSAGE="$(mktemp)"
+          cat << EOF > "$MESSAGE"
+          マイグレーションの変更を含むPR [\#"$NUMBER" - "$TITLE"]("$URL") が "$BASE" へマージされました。
+          \`git merge $BASE\` を実行の上、再度 push してください。
+          EOF
+          gh pr list --repo "$REPO" --base "$BASE" --label "$LABEL" --json number --jq '.[].number' -sall| xargs -n1 gh pr comment --body-file "$MESSAGE" --repo "$REPO"
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           BASE: ${{ github.base_ref }}
+          URL: ${{ github.event.html_url }}
+          NUMBER: ${{ github.event.number }}
+          TITLE: ${{ github.event.title }}
           LABEL: migrate
-          BODY: TEST
