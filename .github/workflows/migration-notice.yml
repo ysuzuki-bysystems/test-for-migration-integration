@@ -25,7 +25,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           BASE: ${{ github.base_ref }}
-          URL: ${{ github.event.html_url }}
+          URL: ${{ github.event.pull_request.html_url }}
           NUMBER: ${{ github.event.number }}
-          TITLE: ${{ github.event.title }}
+          TITLE: ${{ github.event.pull_request.title }}
           LABEL: migrate
