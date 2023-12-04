@@ -21,3 +21,30 @@
 ## チェックしないこと
 
 - マイグレーションの改変・削除
+
+## テスト
+
+### 機能ブランチ間
+
+```mermaid
+gitGraph:
+commit
+
+checkout main
+branch feat1a
+commit id: "ADD: 01_migrate1a.sql"
+
+checkout main
+branch feat1b
+commit id: "ADD: 02_migrate1b.sql"
+checkout main
+merge feat1b
+
+checkout feat1a
+commit id: "MV: 03_migrate1a.sql"
+checkout main
+merge feat1a
+```
+
+- [Test1 - a](https://github.com/ysuzuki-bysystems/test-for-migration-integration/pull/4)
+- [Test1 - b](https://github.com/ysuzuki-bysystems/test-for-migration-integration/pull/5)
