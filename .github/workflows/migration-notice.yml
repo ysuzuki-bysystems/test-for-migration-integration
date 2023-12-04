@@ -13,3 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo '${{ toJSON(github) }}'
+
+      - run: |
+          gh pr list --repo "$REPO" --base "$BASE" --label "$LABEL" --json number --jq '.[].number' -sall| xargs -n1 gh pr comment --body "$BODY"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          BASE: ${{ github.base_ref }}
+          LABEL: migrate
+          BODY: TEST
