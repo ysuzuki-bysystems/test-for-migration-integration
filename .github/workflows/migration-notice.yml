@@ -1,0 +1,15 @@
+name: Migration notice.
+
+on:
+  pull_request:
+#   types:
+#     - closed
+
+permissions:
+  pull-requests: write
+
+jobs:
+  notice:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '${{ toJSON(github) }}'
