@@ -2,10 +2,10 @@ name: Migration notice.
 
 on:
   pull_request:
-    paths:
-      - 'migrations/**'
-    types:
-      - closed
+#   paths:
+#     - 'migrations/**'
+#   types:
+#     - closed
 
 permissions:
   pull-requests: write
@@ -13,14 +13,14 @@ permissions:
 jobs:
   notice:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged
+#   if: github.event.pull_request.merged
     steps:
       - run: echo '${{ toJSON(github) }}'
 
       - run: |
           MESSAGE="$(mktemp)"
           cat << EOF > "$MESSAGE"
-          マイグレーションの変更を含むPR [\#${NUMBER} - ${TITLE}](${URL}) が ${BASE} へマージされました。
+          マイグレーションの変更を含むPR \#${NUMBER} が ${BASE} へマージされました。
           \`git merge ${BASE}\` を実行の上、再度 push してください。
           EOF
           gh pr list --repo "$REPO" --base "$BASE" --label "$LABEL" --json number --jq '.[].number' --state open| xargs -n1 gh pr comment --body-file "$MESSAGE" --repo "$REPO"
